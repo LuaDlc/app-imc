@@ -1,14 +1,12 @@
-
-
-import 'dart:html';
+import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
 
-class userInputWidget extends StatelessWidget {
-  const userInputWidget({
+class UserInputWidget extends StatelessWidget {
+  const UserInputWidget({
     Key? key,
     required this.title,
-    this.height,
+    this.height, required this.value, required this.onIncrease,
   }) : super(key: key);
 
   final String title;
@@ -20,6 +18,8 @@ class userInputWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Text(title, style: TextStyle(color: AppColors.white),
+        ),
 
       ],
     );
