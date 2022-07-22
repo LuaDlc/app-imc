@@ -9,9 +9,14 @@ class MyApp extends StatelessWidget {
 
 
 @override
-Widget build(BuildContext context) {
-  return const MaterialApp(
-    home: MainPage(),
+Widget build(context) {
+  return  MaterialApp(
+    home: const MainPage(),
+    theme: ThemeData(
+      textTheme: GoogleFonts.latoTextTheme(
+        Theme.of(context).textTheme,
+      ),
+    )
   );
 }
 }

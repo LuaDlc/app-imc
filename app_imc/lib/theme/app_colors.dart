@@ -6,6 +6,8 @@ abstract class AppColors {
   static const Color appBarColor = Color(0xFF2A2831);
   static const Color white = Colors.white;
   static const Color background = Colors.black;
+  static const Color primaryColor = Color(0xff87a1fa);
+  static const Color primaryDarkColor = Color(0xff5d78f0);
 
   @override
   Widget build(BuildContext context) {
