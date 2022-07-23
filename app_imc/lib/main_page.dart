@@ -1,70 +1,95 @@
+import 'dart:async';
 import 'package:app_imc/components/user_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:app_imc/theme/app_colors.dart';
 import 'package:app_imc/components/app_bar_widget.dart';
-
 import 'components/bottom_button_widget.dart';
+import 'package:app_imc/result_page.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPAge({Key ? key}) : super(key: key);
+  const MainPage({Key ? key}) : super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  int heightPerson = 170;
-  int weightPerson = 65;
+  int height = 170;
+  int weight = 65;
+
+  Timer? _timer;
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBarWidget(
         leftIcon: Icon(
-          Icons.person, color: AppColors.white,
+          Icons.person,
+          color: AppColors.white,
           ),
-      ),
-      body: Column(
-        children: [
-          SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: UserInputWidget(
+        ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        color: AppColors.black,
+        child: Column(
+          children: [
+            const SizedBox(height: 30),
+            UserInputWidget(
               title: 'Qual a sua altura?',
-              value: heightPerson.toString(),
-              unit: 'cm',
-              onDecrease() {
-                setState((){
-                  heightPerson--;
-                });
-              },
+              value: height,
               onIncrease: () {
-                setState((){
-                  heightPerson++;
-                });
+                increaseHeight();
+            },
+            onIncreaseHold: () {
+              _timer = Timer.periodic(const Duration(milliseconds:200),
+              (timer){
+                increaseHeight();
               },
-            ),
-          ),
-          SizedBox(height:20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: UserInputWidget(
-              title: 'Qual é o seu peso?',
-              value: weightPerson.toString(),
-              unit: 'kg',
-              onDecrease() {
-                setState((){
-                  weightPerson--;
-                });
-              },
-              onIncrease: () {
-                setState((){
-                  weightPerson++;
-                });
-              },
-            ),
+              );
+            },
+            onIncreaseRelease: () => _timer?.cancel(), onDecrease: () {
+              decreaseHeight();
+            },
+            onDecreaseHold: () {
+              _timer = Timer.periodic(
+                const Duration(milliseconds: 200),
+                (timer) {
+                  decreaseHeight();
+                  
+                },
+              );
+            },
+            onDecreaseRelease: () => _timer?.cancel(), measureUnit: 'cm',
+          ), 
+          const SizedBox(height:20),
+          UserInputWidget(
+            height: 140,
+            title: 'Qual é o seu peso?',
+            value: weight,
+            onIncrease: () {
+              increaseWeight();
+            },
+            onIncreaseHold: () {
+              _timer: Timer.periodic(
+                const Duration(milliseconds: 200),
+              (timer) {
+                increaseWeight();
+               },
+              );
+            },
+            onIncreaseRelease: () => _timer?.cancel(), onDecrease: () {
+              decreaseWeight(); 
+            },
+            onDecreaseHold: () {
+              _timer = Timer.periodic(
+                const Duration(milliseconds: 200),
+                (timer) {
+                  decreaseWeight();
+                },
+              );
+            },
+            onDecreaseRelease: () => _timer?.cancel(), measureUnit: 'kg',
           ),
           const Spacer(),
           BottomButtonWidget(
@@ -74,18 +99,40 @@ class _MainPageState extends State<MainPage> {
                 context,
               MaterialPageRoute(
                 builder: (context) =>  ResultPage(
-                  height: heightPerson,
-                  weight: weightPerson
+                  height: height,
+                  weight: weight,
                   ),
-                  ),
+                ),
               );
-              ),
             },
-          )
+          ),
         ],
       ),
-    );
+    ),
+   );
   }
 
-  
+  void increaseHeight() {
+    return setState(() {
+      height++;
+    });
+  }
+
+  void decreaseHeight() {
+    return setState(() {
+      height--;
+    });
+  }
+
+  void increaseWeight() {
+    return setState(() {
+      weight++;
+    });
+  }
+
+  void decreaseWeight() {
+    return setState(() {
+      weight++;
+    });
+  } 
 }

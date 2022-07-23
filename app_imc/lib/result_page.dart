@@ -1,78 +1,93 @@
 
-import 'package:flutter/cupertino.dart';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:app_imc/components/app_bar_widget.dart';
+import 'package:app_imc/theme/app_colors.dart';
+import 'package:app_imc/components/bottom_button_widget.dart';
 
 class ResultPage extends StatelessWidget {
 
-  const ResultPage({Key? key, required this.height, required this.wight}) : super(key: key);
+  const ResultPage({Key? key, required this.height, required this.weight}) : super(key: key);
+
+  final int height;
+  final int weight;
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       appBar: AppBarWidget(
-        leftIcon: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: const Icon(
+        leftIcon: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
             Icons.arrow_back,
             color: AppColors.white,
             ),
            ),
           ),
-          body: Padding(
-            padding: const EdgeInsets.only(
-              top: 30,
-            ),
+          body: Container(
+            color: AppColors.black,
+            width: MediaQuery.of(context).size.width,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  'Resultado',
-                  style: TextStyle(
-                    color: AppColors.white,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
+              children: [
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'Resultado',
+                    style: TextStyle(
+                      color: AppColors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w900,
                       ),
-                    height: 357,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainxAxisalaignment.center,
-                      children: [
-                        Text (
-                          _calculateIMC().toStringAsFixed(1),
-                        style: TextStyle(
-                          color: AppColors.white,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 50,
-                        ),
-                        ),
-                        Text(_resultIMC(),
-                        style: TextStyle(
-                          color: AppColors.white,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 14.5,
-                        ),
-                        ),
-                      ],
+                   ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColorLight,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            _calculateIMC().toStringAsFixed(1),
+                            style: TextStyle(
+                              color: AppColors.white,
+                              fontSize: 50,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          Text(
+                            _resultIMC(),
+                            style: TextStyle(
+                              color: AppColors.white,
+                              fontSize: 14.5,
+                              fontWeight: FontWeight.w900
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Spacer(),
-                  BottomButtonWidget(
-                          title: 'CALCULAR NOVAMENTE',
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                 ],
-                 ),
-              )
+                    ),
+                    const SizedBox(height: 30),
+                    BottomButtonWidget(
+                      title: 'CALCULAR NOVAMENTE',
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],     
+                ),
+              ),
             );
-          }
-
+          }                          
+                          
           double _calculateIMC() {
     return weight / (pow(height / 100, 2));
   }
@@ -93,4 +108,4 @@ class ResultPage extends StatelessWidget {
       return 'Obesidade Grau III ou Morbida';
     }
   }
-        }
+ }
